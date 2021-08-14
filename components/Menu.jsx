@@ -17,7 +17,7 @@ const Menu = (props) => {
     :
     //all other pages, delete, update, etc (future)
       <MenuContainer>
-        <Text style={{}}>{props.title}</Text>
+        <Text>{props.title}</Text>
       </MenuContainer>
       }
       
@@ -33,7 +33,7 @@ const StatusBar = styled.View`
   position:relative;
   top:0;
   left:0;
-  background:${styledConstants.COLOR2};
+  background:${styledConstants.STATUSBARCOLOR};
   width:100%;
   height: ${styledConstants.statusBarHeight};
   /* opacity: ${styledConstants.OPACITY}; */
@@ -47,7 +47,11 @@ const MenuContainer = styled.View`
   flex-direction:row;
   justify-content:space-between;
   align-items:center;
-  background: ${styledConstants.COLOR2};
+  background: ${styledConstants.PROPBACKGROUNDCOLOR};
   opacity: ${styledConstants.OPACITY};
 `;
-const Text = styled.Text``;
+const Text = styled.Text`
+color: ${styledConstants.TEXTCOLOR};
+font-size: 20px;
+font-weight:bold;
+`;

@@ -5,7 +5,7 @@ export default function itemsReducer(state = initialState, action) {
   //Cases
   switch (action.type){
     case 'INIT_ITEMS':{
-      return [...state ,action.payload]
+      return action.payload
     }
     case 'GET_ITEMS':
       return state;
@@ -21,8 +21,8 @@ export async function initItems(dispatch, getState){
   try{
     const response = await fetch('http://192.168.2.170:3000/items');
     const state = []
-    const responseData = await response.json();
-
+    if (response.ok){
+      const responseData = await response.json();
 
     for(let index = 0; index < responseData.length; index++){
         state.push({
@@ -34,8 +34,13 @@ export async function initItems(dispatch, getState){
         })
     }
     dispatch({ type: 'INIT_ITEMS', payload: state })
-  } catch(err){
-    console.log(err)
+    }
+    else{
+      Promise.reject(response)
+    }
+    
+  } catch(error){
+    console.log('Something went wrong.',error)
   }
 }
 

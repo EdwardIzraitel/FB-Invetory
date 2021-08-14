@@ -3,9 +3,9 @@ const initialState = []
 //Reducer
 export default function categoriesReducer(state = initialState, action) {
   //Cases
-  switch (action.type){
-    case 'INIT_CATEGORIES':{
-      return [...state ,action.payload]
+  switch (action.type) {
+    case 'INIT_CATEGORIES': {
+      return action.payload
     }
     case 'GET_CATEGORIES':
       return state;
@@ -17,24 +17,28 @@ export default function categoriesReducer(state = initialState, action) {
 //initialize data
 //allows forsnychronous load
 //loads this before form
-export async function initCategories(dispatch, getState){
-  try{
+export async function initCategories(dispatch, getState) {
+  try {
     const response = await fetch('http://192.168.2.170:3000/category');
-    const state = []
-    const responseData = await response.json();
-
-    for(let index = 0; index < responseData.length; index++){
+    if (response.ok) {
+      const state = []
+      const responseData = await response.json();
+      for (let index = 0; index < responseData.length; index++) {
         state.push({
           Name: responseData[index].name,
           Id: responseData[index]._id
         })
+      }
+      dispatch({ type: 'INIT_CATEGORIES', payload: state })
     }
-    dispatch({ type: 'INIT_CATEGORIES', payload: state })
-  } catch(err){
-    console.log(err)
+    else{
+      Promise.reject(response)
+    }
+  } catch (error) {
+    console.log('Something went wrong.', error)
   }
 }
 
-export async function getData(dispatch,getState){
-dispatch({type:'GET_CATEGORIES'})
+export async function getData(dispatch, getState) {
+  dispatch({ type: 'GET_CATEGORIES' })
 }
